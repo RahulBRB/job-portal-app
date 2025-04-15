@@ -30,7 +30,7 @@
     },
     {
       "id": "3",
-      "title": "React.js Dev",
+      "title": "React.js Dev ",
       "type": "Full-Time",
       "location": "Brooklyn, NY",
       "description": "Are you passionate about front-end development? Join our team in vibrant Brooklyn, NY, and work on exciting projects that make a difference. We offer competitive compensation and a collaborative work environment where your ideas are valued.",
@@ -85,17 +85,17 @@
       }
     },
     {
-      "id": "be46",
-      "title": "UI/UX Expert",
+      "id": "a7c3",
+      "title": "Junior Front-End Developer at PixelWorx Studios",
       "type": "Full-Time",
-      "location": "India",
-      "description": "Very professiona guy needed",
-      "salary": "Over $200K",
+      "location": "San Diego, CA (Hybrid – 3 days on-site)",
+      "description": "We’re looking for a creative and detail-oriented Junior Front-End Developer to join our dynamic web development team. You’ll work closely with designers and back-end developers to create visually stunning and highly responsive websites for our clients.\n\n",
+      "salary": "Under $50K",
       "company": {
-        "name": "BIgRock",
-        "description": "Investment firm",
-        "contactEmail": "bigr@gmail.com",
-        "contactPhone": "644"
+        "name": "PixelWorx Studios",
+        "description": "PixelWorx Studios is a creative tech agency specializing in web design, branding, and custom development solutions. We bring ideas to life through code, color, and collaboration. Our mission is to empower businesses with digital experiences that leave a lasting impression.\n\n",
+        "contactEmail": "careers@pixelworxstudio.com",
+        "contactPhone": "(555) 123-9876"
       }
     }
   ]

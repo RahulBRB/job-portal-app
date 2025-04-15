@@ -1,10 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-//useNavigate is a hook that returns a function that lets you navigate programmatically
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 import { toast } from "react-toastify";
 
-const AddJobPage = ({ addJobSubmit }) => {
+const EditJobPage = ({ updateJobSubmit }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const [title, setTitle] = useState("");
   const [type, setType] = useState("Full-Time");
   const [location, setLocation] = useState("");
@@ -15,14 +21,39 @@ const AddJobPage = ({ addJobSubmit }) => {
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const res = await fetch(`/api/jobs/${id}`);
+        const data = await res.json();
+        setJob(data);
 
-  // Function to handle form submission
+        // Populate form with fetched job datas
+        setTitle(data.title || "");
+        setType(data.type || "Full-Time");
+        setLocation(data.location || "");
+        setDescription(data.description || "");
+        setSalary(data.salary || "Under $50K");
+
+        setCompanyName(data.company?.name || "");
+        setCompanyDescription(data.company?.description || "");
+        setContactEmail(data.company?.contactEmail || "");
+        setContactPhone(data.company?.contactPhone || "");
+      } catch (err) {
+        console.error("Error fetching job data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJob();
+  }, [id]);
+
   const submitForm = (e) => {
     e.preventDefault();
 
-    //Defining the new job object
-    const newJob = {
+    //Defining the job object again
+    const updatedJob = {
+      id,
       title,
       type,
       location,
@@ -35,18 +66,23 @@ const AddJobPage = ({ addJobSubmit }) => {
         contactPhone,
       },
     };
-    addJobSubmit(newJob);
-    toast.success("Job added successfully");
-    return navigate("/jobs");
+    updateJobSubmit(updatedJob);
+    toast.success("Job updated successfully");
+    return navigate(`/job/${id}`);
   };
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <section className="bg-indigo-50">
       <div className="container m-auto max-w-2xl py-24">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
           <form onSubmit={submitForm}>
-            <h2 className="text-3xl text-center font-semibold mb-6">Add Job</h2>
+            <h2 className="text-3xl text-center font-semibold mb-6">
+              Edit Job
+            </h2>
 
+            {/* Job Type */}
             <div className="mb-4">
               <label
                 htmlFor="type"
@@ -69,6 +105,7 @@ const AddJobPage = ({ addJobSubmit }) => {
               </select>
             </div>
 
+            {/* Title */}
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2">
                 Job Listing Name
@@ -84,6 +121,8 @@ const AddJobPage = ({ addJobSubmit }) => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
+
+            {/* Description */}
             <div className="mb-4">
               <label
                 htmlFor="description"
@@ -102,9 +141,10 @@ const AddJobPage = ({ addJobSubmit }) => {
               ></textarea>
             </div>
 
+            {/* Salary */}
             <div className="mb-4">
               <label
-                htmlFor="type"
+                htmlFor="salary"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Salary
@@ -131,6 +171,7 @@ const AddJobPage = ({ addJobSubmit }) => {
               </select>
             </div>
 
+            {/* Location */}
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2">
                 Location
@@ -147,6 +188,7 @@ const AddJobPage = ({ addJobSubmit }) => {
               />
             </div>
 
+            {/* Company Info */}
             <h3 className="text-2xl mb-5">Company Info</h3>
 
             <div className="mb-4">
@@ -185,6 +227,7 @@ const AddJobPage = ({ addJobSubmit }) => {
               ></textarea>
             </div>
 
+            {/* Contact Info */}
             <div className="mb-4">
               <label
                 htmlFor="contact_email"
@@ -203,6 +246,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 onChange={(e) => setContactEmail(e.target.value)}
               />
             </div>
+
             <div className="mb-4">
               <label
                 htmlFor="contact_phone"
@@ -221,12 +265,13 @@ const AddJobPage = ({ addJobSubmit }) => {
               />
             </div>
 
+            {/* Submit Button */}
             <div>
               <button
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
               >
-                Add Job
+                Update Job
               </button>
             </div>
           </form>
@@ -236,4 +281,4 @@ const AddJobPage = ({ addJobSubmit }) => {
   );
 };
 
-export default AddJobPage;
+export default EditJobPage;
